@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+}
+
+.spinner {
+    border: 8px solid #333;
+    border-bottom: 8px solid transparent;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    animation: Rotate 1s linear infinite;
+}
+
+@keyframes Rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

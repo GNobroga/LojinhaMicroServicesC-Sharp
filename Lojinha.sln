@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Product.API", "Lojinha.Product.API\Lojinha.Product.API.csproj", "{A1D57C38-3A93-4BBF-8296-1D9457E1773B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Consumer.Web", "Lojinha.Consumer.Web\Lojinha.Consumer.Web.csproj", "{92AE0336-1F00-43D1-819A-389659125A7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A1D57C38-3A93-4BBF-8296-1D9457E1773B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1D57C38-3A93-4BBF-8296-1D9457E1773B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1D57C38-3A93-4BBF-8296-1D9457E1773B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92AE0336-1F00-43D1-819A-389659125A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92AE0336-1F00-43D1-819A-389659125A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92AE0336-1F00-43D1-819A-389659125A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92AE0336-1F00-43D1-819A-389659125A7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

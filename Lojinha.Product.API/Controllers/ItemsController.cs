@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace Lojinha.Product.API.Controllers;
 [Produces(contentType: "application/json")]
 [Consumes(contentType: "application/json")]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class ItemsController : ControllerBase
 {
     private readonly IItemService _service;
