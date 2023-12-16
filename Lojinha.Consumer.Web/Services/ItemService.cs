@@ -23,14 +23,11 @@ public class ItemService : IItemService
         return await res.ConvertJsonToModel<ItemModel>();
     }
 
-    public async Task<bool> Delete(long id)
+    public async Task Delete(long id)
     {
         var http = GetHttpClient();
 
-        var res = await http.MakeGetRequest($"items/{id}");
-
-        return await res.ConvertJsonToModel<bool>();
-
+        await http.MakeDeleteRequest($"items/{id}");
     }   
 
     public async Task<IEnumerable<ItemModel>> FindAll()
@@ -51,7 +48,7 @@ public class ItemService : IItemService
         return await res.ConvertJsonToModel<ItemModel>();
     }
 
-    public async Task<ItemModel> Update(int id, ItemModel vo)
+    public async Task<ItemModel> Update(long id, ItemModel vo)
     {
         var http = GetHttpClient();
 

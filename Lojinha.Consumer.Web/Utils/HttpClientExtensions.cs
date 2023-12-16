@@ -16,7 +16,7 @@ public static class HttpClientExtensions
     {   
 
         var response = await http.GetAsync(endpoint);
-    
+
         if (!response.IsSuccessStatusCode)
             throw new ApplicationException($"An error occurred during the get request: {response.ReasonPhrase}");
     

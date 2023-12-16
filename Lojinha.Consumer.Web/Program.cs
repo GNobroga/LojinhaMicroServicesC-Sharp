@@ -14,14 +14,14 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/error");
+    app.UseExceptionHandler("/Home/Error");
 }
 
 app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id:int?}"
+    pattern: "{controller=Items}/{action=List}/{id:int?}"
 );
 
 app.Run();

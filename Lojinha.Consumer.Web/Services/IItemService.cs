@@ -8,9 +8,9 @@ public interface IItemService
 
     public Task<ItemModel> FindById(long id);
 
-    public Task<bool> Delete(long id);
+    public Task Delete(long id);
 
-    public Task<ItemModel> Update(int id, ItemModel vo);
+    public Task<ItemModel> Update(long id, ItemModel vo);
 
     public Task<ItemModel> Create(ItemModel vo);
 }
