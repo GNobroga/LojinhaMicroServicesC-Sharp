@@ -1,6 +1,7 @@
 
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,23 @@ builder.Services.AddSwaggerGen(opt =>
     })
 );
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt => {
+        opt.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
+        opt.TokenValidationParameters = new() {
+            ValidateAudience = false
+        };
+        opt.RequireHttpsMetadata = false;
+    });
+
+// This service allows adding a custom policy and using it within the authorize attribute. (by GABRIEL)
+builder.Services.AddAuthorization(opt => {
+    opt.AddPolicy("ApiScope", policy => {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "web");
+    });
+});
+
 builder.Services.AddCors();
 
 var app = builder.Build();
@@ -31,7 +49,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-
 
 app.UseAuthentication();
 app.UseAuthorization();

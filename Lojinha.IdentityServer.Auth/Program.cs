@@ -38,8 +38,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-   
-    //app.UseHsts();
 }
 
 using var scope = app.Services.CreateScope();
@@ -49,7 +47,6 @@ var appService = scope.ServiceProvider.GetService<AppService>();
 appService?.CreateRoles().Wait();
 appService?.CreateUsers().Wait();
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 

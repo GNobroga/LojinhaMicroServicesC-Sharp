@@ -18,7 +18,7 @@ public static class ApplicationConfig
     public static IEnumerable<ApiScope> ApiScopes => 
         new List<ApiScope>() 
         {
-          new(name: "lojinha", "Lojinha"),
+          new(name: "web", "Lojinha WEB"),
           new(name: "read", "Read data"),
           new(name: "write", "Write data"),
           new(name: "delete", "Delete data"),
@@ -28,10 +28,10 @@ public static class ApplicationConfig
         new List<Client>()
         {
             new() {
-                ClientId = "product_web",
-                ClientSecrets = { new Secret("gabriel_super_secret".Sha256())},
+                ClientId = "lojinha_web",
+                ClientSecrets = { new Secret("lojinha_super_secret".Sha256())},
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "read", "write", "profile", "lojinha" }
+                AllowedScopes = { "read", "write", "profile", "web" }
             }
         };
 
