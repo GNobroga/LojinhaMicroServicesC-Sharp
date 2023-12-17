@@ -1,6 +1,7 @@
 using Duende.IdentityServer.Configuration;
 using Lojinha.IdentityServer.Auth.Config;
 using Lojinha.IdentityServer.Auth.Context;
+using Lojinha.IdentityServer.Auth.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,40 +9,45 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddIdentityServer();
-
 builder.Services.AddDbContext<SqliteContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"))
 );
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<SqliteContext>();
+    .AddEntityFrameworkStores<SqliteContext>()
+    .AddDefaultTokenProviders();
+    
 
-// builder.Services.AddIdentityServer(opt => {
-//     opt.Events.RaiseErrorEvents = true;
-//     opt.Events.RaiseInformationEvents = true;
-//     opt.Events.RaiseFailureEvents = true;
-//     opt.Events.RaiseSuccessEvents = true;
-//     opt.EmitStaticAudienceClaim = true;
-// })
-// .AddInMemoryApiScopes(ApplicationConfig.ApiScopes)
-// .AddInMemoryClients(ApplicationConfig.Clients)
-// .AddInMemoryIdentityResources(ApplicationConfig.IdentityResources)
-// .AddAspNetIdentity<ApplicationUser>()
-// .AddDeveloperSigningCredential();
+builder.Services.AddIdentityServer(opt => {
+    opt.Events.RaiseErrorEvents = true;
+    opt.Events.RaiseInformationEvents = true;
+    opt.Events.RaiseFailureEvents = true;
+    opt.Events.RaiseSuccessEvents = true;
+    opt.EmitStaticAudienceClaim = true;
+})
+.AddInMemoryApiScopes(ApplicationConfig.ApiScopes)
+.AddInMemoryClients(ApplicationConfig.Clients)
+.AddInMemoryIdentityResources(ApplicationConfig.IdentityResources)
+.AddAspNetIdentity<ApplicationUser>()
+.AddDeveloperSigningCredential();
 
+builder.Services.AddScoped<AppService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+   
     //app.UseHsts();
 }
 
+using var scope = app.Services.CreateScope();
+
+var appService = scope.ServiceProvider.GetService<AppService>();
+
+appService?.CreateRoles().Wait();
+appService?.CreateUsers().Wait();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

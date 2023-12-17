@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lojinha.Product.API.Controllers;
@@ -18,6 +19,7 @@ public class ItemsController : ControllerBase
         _logger = logger;
     }
 
+    [Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemVO>))]
     public async Task<ActionResult<IEnumerable<ItemVO>>> Get() 
@@ -26,6 +28,7 @@ public class ItemsController : ControllerBase
        return Ok(await _service.FindAll());
     }
 
+    [Authorize]
     [HttpGet("{id:int}", Name = "FindById")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,6 +48,7 @@ public class ItemsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,6 +67,7 @@ public class ItemsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,6 +88,7 @@ public class ItemsController : ControllerBase
         }
     }
 
+    [Authorize(Roles = Role.ADMIN)]
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

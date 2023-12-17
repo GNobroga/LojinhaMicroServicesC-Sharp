@@ -1,5 +1,8 @@
 using Lojinha.Consumer.Web.Models;
 using Lojinha.Consumer.Web.Services;
+using Lojinha.Consumer.Web.Utils;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lojinha.Consumer.Web.Controllers;
@@ -9,6 +12,8 @@ public class ItemsController : Controller
     private readonly IItemService _service;
 
     public ItemsController(IItemService service) => _service = service;
+
+    [Authorize(Roles = Role.ADMIN)]
     public async Task<ViewResult> List() 
     {
         var items = await _service.FindAll();
@@ -18,6 +23,7 @@ public class ItemsController : Controller
 
     public IActionResult Create() => View();
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(ItemModel model) 
     {   
@@ -28,6 +34,7 @@ public class ItemsController : Controller
         return RedirectToAction("List");
     }
 
+    [Authorize]
     public async Task<IActionResult> Update(int id) 
     {
         var item = await _service.FindById(id);
@@ -45,6 +52,7 @@ public class ItemsController : Controller
         return RedirectToAction("List");
     }
 
+    [Authorize(Roles = Role.ADMIN)]
     public async Task<IActionResult> Delete(long id) 
     {   
         await _service.Delete(id);
