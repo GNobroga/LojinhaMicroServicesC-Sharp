@@ -1,6 +1,4 @@
 using System.Net;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lojinha.Product.API.Controllers;

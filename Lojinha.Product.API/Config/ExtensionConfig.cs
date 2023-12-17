@@ -6,7 +6,6 @@ public static class ExtensionConfig
     {
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IItemService, ItemService>();
-
         return services;
     }
 }

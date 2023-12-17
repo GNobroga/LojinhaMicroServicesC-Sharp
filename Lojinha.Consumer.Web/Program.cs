@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("ItemAPI", opt => {
-    opt.BaseAddress = new Uri(builder.Configuration["ServiveUrls:ItemAPI"]!);
+    opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ItemAPI"]!);
 });
 
 builder.Services.AddScoped<IItemService, ItemService>();
