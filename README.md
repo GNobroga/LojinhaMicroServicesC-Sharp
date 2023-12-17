@@ -2,15 +2,19 @@
 
 É uma aplicação que estou fazendo para aprofundar no conceito de microserviços.
 
-# Tecnologias
+## Tecnologias
 
-### Entity Framework
+#### Entity Framework
 
-### Auto Mapper
+#### Auto Mapper
 
-### Swagger 
+#### Swagger 
 
-### Identity Server
+#### Identity Server
 
-### Razor
+#### Razor
+
+#### JwtBearer
+
+#### Duende Server
 
