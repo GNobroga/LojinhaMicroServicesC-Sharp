@@ -2,8 +2,7 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
-using Duende.IdentityServer.Stores;
-using Duende.IdentityServer.Test;
+using Lojinha.IdentityServer.Auth.Config;
 using Lojinha.IdentityServer.Auth.Context;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -78,7 +77,7 @@ public class Index : PageModel
             }
         }
 
-        if (await _userManager.FindByNameAsync(Input.Username) != null)
+        if (!string.IsNullOrWhiteSpace(Input.Username) && await _userManager.FindByNameAsync(Input.Username) != null)
         {
             ModelState.AddModelError("Input.Username", "Invalid username");
         }
@@ -94,6 +93,11 @@ public class Index : PageModel
 
             //Input.Username, Input.Password, Input.Name, Input.Email
             var result = await _userManager.CreateAsync(user, Input.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, ApplicationConfig.CLIENT);
+            }
 
             // issue authentication cookie with subject ID and username
             var isuser = new IdentityServerUser(user.Id)
