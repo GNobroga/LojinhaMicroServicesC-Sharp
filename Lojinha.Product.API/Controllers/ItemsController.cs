@@ -19,7 +19,7 @@ public class ItemsController : ControllerBase
         _logger = logger;
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemVO>))]
     public async Task<ActionResult<IEnumerable<ItemVO>>> Get() 
@@ -28,7 +28,7 @@ public class ItemsController : ControllerBase
        return Ok(await _service.FindAll());
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet("{id:int}", Name = "FindById")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -48,7 +48,7 @@ public class ItemsController : ControllerBase
         }
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -67,7 +67,7 @@ public class ItemsController : ControllerBase
         }
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ItemVO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,7 +88,7 @@ public class ItemsController : ControllerBase
         }
     }
 
-    [Authorize(Roles = Role.ADMIN)]
+    //[Authorize(Roles = Role.ADMIN)]
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

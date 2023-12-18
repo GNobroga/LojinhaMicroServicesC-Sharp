@@ -1,5 +1,7 @@
+using System.Formats.Tar;
 using Lojinha.Consumer.Web.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.CookiePolicy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,28 +29,40 @@ builder.Services.AddAuthentication(opt => {
     opt.TokenValidationParameters.NameClaimType = "name";
     opt.TokenValidationParameters.RoleClaimType = "role";
     opt.Scope.Add("web");
+    opt.Scope.Add("profile");
+    opt.Scope.Add("openid");
+    opt.Scope.Add("email");
     opt.SaveTokens = true;
-    opt.RequireHttpsMetadata = false;
+    opt.CallbackPath = "/home";
+    opt.RequireHttpsMetadata = false; 
+    opt.UsePkce = true;
 });
+
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Home/Index");
 }
 
 app.UseRouting();
 
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    HttpOnly = HttpOnlyPolicy.Always,
+    MinimumSameSitePolicy = SameSiteMode.None,
+    Secure = CookieSecurePolicy.Always
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Items}/{action=List}/{id:int?}"
+    pattern: "{controller=Home}/{action=Index}/{id:int?}"
 );
 
 app.Run();

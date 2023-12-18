@@ -15,11 +15,34 @@ builder.Services.AddRegisterMaps();
 builder.Services.AddRepositoriesWithServices();
 
 builder.Services.AddSwaggerGen(opt =>
-    opt.SwaggerDoc("v1", new OpenApiInfo {
-        Title = "API Product",
-        Description = "API to manage products"
-    })
-);
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "API Product", Description = "API to manage products" });
+
+    opt.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme {
+        Description = @"Enter 'Bearer' [space] 'Token' ",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement {
+       {
+         new OpenApiSecurityScheme {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = JwtBearerDefaults.AuthenticationScheme
+            },
+            Scheme = "oauth2",
+            Name = JwtBearerDefaults.AuthenticationScheme,
+            In = ParameterLocation.Header
+        },
+        new List<string>()
+       }
+    });
+    
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt => {
