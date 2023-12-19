@@ -20,4 +20,8 @@ public class CartDetail : Base
 
     [Column("count")]
     public long Count { get; set; }
+
+    [Column("paid")]
+    public bool Paid { get; set; }
+
 }

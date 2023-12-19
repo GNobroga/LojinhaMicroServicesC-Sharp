@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Lojinha.Cart.API.Entities;
+
 
 public class Cart 
 {
-    public ICollection<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
+    public List<CartDetail> CartDetails { get; set; } = new();
 }

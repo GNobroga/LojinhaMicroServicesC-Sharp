@@ -15,9 +15,9 @@ public static class ApiExtension
     {
         var api = app.MapGroup("carrinho");
 
-        api.MapPost("/", (HttpContext context, CartDetailDTO dto, IMapper mapper) => {
-            return Results.Ok(mapper.Map<Entities.CartDetail>(dto));
-        }).AddEndpointFilter<DTOValidatorFilter<CartDetailDTO>>();
+        api.MapPost("/", (HttpContext context, CartDTO dto, IMapper mapper) => {
+            return Results.Ok(mapper.Map<Entities.Cart>(dto));
+        });//.AddEndpointFilter<DTOValidatorFilter<CartDTO>>();
 
         return app;
     }

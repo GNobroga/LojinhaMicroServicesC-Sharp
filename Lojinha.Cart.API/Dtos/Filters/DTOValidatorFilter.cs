@@ -4,7 +4,7 @@ using Lojinha.Cart.API.Utils;
 
 namespace Lojinha.Cart.API.Dtos.Filters;
 
-public class DTOValidatorFilter<T> : IEndpointFilter where T: class
+public class DTOValidatorFilter<T> : IEndpointFilter where T : class
 {
     private readonly IValidator<T> _validator;
 
@@ -16,9 +16,9 @@ public class DTOValidatorFilter<T> : IEndpointFilter where T: class
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         var dto = context.Arguments.FirstOrDefault(dto => dto?.GetType() == typeof(T)) as T;
-        
+
         var result = await _validator.ValidateAsync(dto!);
-        
+
         if (!result.IsValid)
         {
             var invalidObject = new InvalidObject();
