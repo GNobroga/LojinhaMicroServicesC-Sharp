@@ -15,7 +15,7 @@ public class RequestHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {   
-        Console.WriteLine("oiii");
+    
         var token = await _accessor.HttpContext!.GetTokenAsync("access_token");
 
         request.Headers.Add("Authorization", $"Bearer {token}");
