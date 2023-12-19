@@ -45,6 +45,7 @@ public class CartRepository : ICartRepository
         var cartDetails = await _context.CartDetails
             .Where(cd => cd.UserId == userId && !cd.Paid)
             .Include(cd => cd.Item)
+            .AsNoTracking()
             .ToListAsync();
         
         return _mapper.Map<CartDTO>(new Entities.Cart { CartDetails = cartDetails });
@@ -52,7 +53,7 @@ public class CartRepository : ICartRepository
 
     public async Task<bool> RemoveAsync(long cartDetailId, string userId)
     {
-        var cartDetail = _context.CartDetails.FirstOrDefault(cd => cd.UserId == userId && cd.Id == cartDetailId);
+        var cartDetail = _context.CartDetails.FirstOrDefault(cd => cd.UserId == userId && cd.Id == cartDetailId && !cd.Paid);
 
         if (cartDetail != null)
         {
@@ -86,18 +87,34 @@ public class CartRepository : ICartRepository
             {   
                 var data = _context.CartDetails.Find(cartDetail.Id);
                 if (data != null)
-                    _context.CartDetails.Update(_mapper.Map(cartDetail, data));
+                {
+                     _context.CartDetails.Update(_mapper.Map(cartDetail, data));
+                }
                 else 
-                    await _context.CartDetails.AddAsync(_mapper.Map<CartDetailDTO, CartDetail>(cartDetail));
+                {
+                    if (cartDetail.Item?.Id == null || _context.Items.Find(cartDetail.Item.Id) == null)
+                        throw new Exception("É necessário que o produto exista para ser posto no carrinho.");
+
+                    var cartDetailsSimilar = await _context.CartDetails.FirstOrDefaultAsync(cd => cd.ItemId == cartDetail.Item.Id && cd.UserId == userId && !cd.Paid);
+
+                    if (cartDetailsSimilar != null)
+                    {
+                        cartDetailsSimilar.Count += cartDetail.Count;
+                    }
+                    else 
+                    {
+                        await _context.CartDetails.AddAsync(_mapper.Map<CartDetailDTO, CartDetail>(cartDetail));
+                    }
+                }
             }
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
             return await FindByUserIdAsync(userId);
         } 
-        catch 
+        catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            throw new ApplicationException("Um erro ocorreu durante o salvando ou atualização");
+            throw new ApplicationException("Um erro ocorreu durante o salvar: " + ex.Message);
         }
     }
 }
