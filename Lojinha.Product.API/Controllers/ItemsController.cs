@@ -19,7 +19,6 @@ public class ItemsController : ControllerBase
         _logger = logger;
     }
 
-    [Authorize(Roles = Role.CLIENT)]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemVO>))]
     public async Task<ActionResult<IEnumerable<ItemVO>>> Get() 

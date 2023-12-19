@@ -18,7 +18,8 @@ public class RequestHandler : DelegatingHandler
     
         var token = await _accessor.HttpContext!.GetTokenAsync("access_token");
 
-        request.Headers.Add("Authorization", $"Bearer {token}");
+        if (token != null)
+            request.Headers.Add("Authorization", $"Bearer {token}");
 
         return base.Send(request, cancellationToken);
     }

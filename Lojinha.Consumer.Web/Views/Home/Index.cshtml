@@ -1,3 +1,35 @@
-<div>
-    <h1 class="display-4">Hello, welcome to Lojinha Consumer</h1>
-</div>
+@{
+    ViewData["Title"] = "Home";
+}
+
+@model IEnumerable<ItemModel>
+
+    <form>
+        <div class="container row">
+            @foreach (var item in Model)
+            {
+                <div class="col-4">
+                    <div class="p-0 my-3 border">
+                        <div class="card">
+                            <img src="@item.ImageUrl" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title text-success">@item.SubstringName(24)</h3>
+                                <span class="badge badge-light mb-2">@item.CategoryName</span>
+                                <p class="card-text">@Html.Raw(item.SubstringDescription(355))</p>
+    
+                                <div class="row">
+                                    <div class="col pt-1">
+                                        <span style="font-size:23px;">@string.Format("{0:c}", item.Price)</span>
+                                    </div>
+                                    <div class="col">
+                                        <a asp-action="Details" asp-route-id="@item.Id"
+                                            class="btn btn-success form-control">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>

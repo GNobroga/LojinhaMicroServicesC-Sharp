@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations;
 namespace Lojinha.Consumer.Web.Models;
 
 public class ItemModel
-{
+{   
+    [Key]
     public long Id { get; set; }
 
     [Display(Name = "Nome")]
@@ -18,7 +19,7 @@ public class ItemModel
 
     [Display(Name = "Descrição")]
     [StringLength(500)]
-    public string? Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     [Display(Name = "Categoria")]
     [Required(ErrorMessage = "O {0} é um campo requerido.")]
@@ -27,5 +28,18 @@ public class ItemModel
 
     [Display(Name = "Imagem")]
     [StringLength(300)]
-    public string? ImageUrl { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
+
+    [Range(1, 100, ErrorMessage = "A quantidade deve estar entre {1} e {2}")]
+    public int Count { get; set; } = 1;
+
+    public string SubstringName(int limit)
+    {
+        return Name.Length < limit ? Name : Name[limit..];
+    }
+
+      public string SubstringDescription(int limit)
+    {
+        return Description.Length < limit ? Description : Description[limit..];
+    }
 }
