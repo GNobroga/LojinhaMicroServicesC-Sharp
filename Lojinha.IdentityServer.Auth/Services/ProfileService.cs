@@ -35,6 +35,7 @@ public class ProfileService : IProfileService
         ClaimsPrincipal claimsPrincipal = await _userClaimsPrincipalFactory.CreateAsync(user); 
 
         List<Claim> claims = claimsPrincipal.Claims.ToList();
+        
         claims.AddRange(new List<Claim>() { 
             new(JwtClaimTypes.FamilyName, user.LastName), 
             new(JwtClaimTypes.GivenName, user.FirstName)

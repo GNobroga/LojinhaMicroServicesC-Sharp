@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Lojinha.Cart.API.Dtos;
 public record CartDetailDTO(
     long Id,
