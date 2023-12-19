@@ -12,7 +12,7 @@ public static class ApplicationConfig
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Email(),
-            new IdentityResources.Profile(),
+            new IdentityResources.Profile()
         };
     
     public static IEnumerable<ApiScope> ApiScopes => 

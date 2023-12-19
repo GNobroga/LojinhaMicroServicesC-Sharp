@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+using IdentityModel;
 using Lojinha.IdentityServer.Auth.Config;
 using Lojinha.IdentityServer.Auth.Context;
 using Microsoft.AspNetCore.Authentication;
@@ -87,7 +89,7 @@ public class Index : PageModel
 
             var user = new ApplicationUser {
                 UserName = Input.Username,
-                FirstName = Input.Name,
+                FirstName = Input.FirstName,
                 Email = Input.Email
             };
 
@@ -97,6 +99,15 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, ApplicationConfig.CLIENT);
+                Claim[] claims = {
+                    new(JwtClaimTypes.Name, Input.Username),
+                    new(JwtClaimTypes.Email, Input.Email),
+                    new(JwtClaimTypes.FamilyName, Input.LastName),
+                    new(JwtClaimTypes.GivenName, Input.FirstName),
+                    new(JwtClaimTypes.Role, ApplicationConfig.CLIENT)
+                };
+
+                await _userManager.AddClaimsAsync(user, claims);
             }
 
             // issue authentication cookie with subject ID and username

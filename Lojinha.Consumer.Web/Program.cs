@@ -1,7 +1,9 @@
 using System.Formats.Tar;
+using Lojinha.Consumer.Web.Interceptors;
 using Lojinha.Consumer.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("ItemAPI", opt => {
     opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ItemAPI"]!);
-});
+}).AddHttpMessageHandler<RequestHandler>();
 
 builder.Services.AddScoped<IItemService, ItemService>();
 
@@ -38,6 +40,9 @@ builder.Services.AddAuthentication(opt => {
     opt.UsePkce = true;
 });
 
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<RequestHandler>();
 
 var app = builder.Build();
 

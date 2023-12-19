@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Lojinha.Consumer.Web.Models;
 using Lojinha.Consumer.Web.Services;
 using Lojinha.Consumer.Web.Utils;
@@ -7,23 +8,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lojinha.Consumer.Web.Controllers;
 
-public class ItemsController : Controller
+public class ItemController : Controller
 {
     private readonly IItemService _service;
 
-    public ItemsController(IItemService service) => _service = service;
+    public ItemController(IItemService service) => _service = service;
 
-    [Authorize(Roles = Role.ADMIN)]
+    [Authorize(Roles = Role.CLIENT)]
     public async Task<ViewResult> List() 
     {
+        Console.WriteLine("OII");
         var items = await _service.FindAll();
 
         return View(items);
     }
 
+    [Authorize(Roles = Role.CLIENT)]
     public IActionResult Create() => View();
 
-    [Authorize]
+    [Authorize(Roles = Role.CLIENT)]
     [HttpPost]
     public async Task<IActionResult> Create(ItemModel model) 
     {   
@@ -34,7 +37,7 @@ public class ItemsController : Controller
         return RedirectToAction("List");
     }
 
-    [Authorize]
+    [Authorize(Roles = Role.CLIENT)]
     public async Task<IActionResult> Update(int id) 
     {
         var item = await _service.FindById(id);
@@ -42,6 +45,7 @@ public class ItemsController : Controller
         return View(item);
     }
 
+    [Authorize(Roles = Role.CLIENT)]
     [HttpPost]
     public async Task<IActionResult> Update(ItemModel model) 
     {   

@@ -50,7 +50,7 @@
                                      <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                                 </div>
                                 <div class="col d-flex justify-content-end">
-                                    <a asp-page="/Account/Create/Index" class="btn btn-success">Criar uma conta</a>
+                                    <a asp-page="/Account/Create/Index" asp-route-returnUrl="@Model.Input.ReturnUrl" class="btn btn-success">Criar uma conta</a>
                                 </div>
                             </div>
                             

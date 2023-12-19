@@ -15,6 +15,8 @@ namespace Lojinha.Consumer.Web.Controllers
 
         public IActionResult Index()
         {
+            var accessToken = HttpContext.GetTokenAsync("access_token").Result;
+            Console.WriteLine(accessToken);
             return View();
         }
 

@@ -1,3 +1,4 @@
+using Duende.IdentityServer.Services;
 using Lojinha.IdentityServer.Auth.Config;
 using Lojinha.IdentityServer.Auth.Context;
 using Lojinha.IdentityServer.Auth.Services;
@@ -20,10 +21,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
     
 builder.Services.AddIdentityServer(opt => {
-    opt.Events.RaiseErrorEvents = true;
-    opt.Events.RaiseInformationEvents = true;
-    opt.Events.RaiseFailureEvents = true;
-    opt.Events.RaiseSuccessEvents = true;
+    // opt.Events.RaiseErrorEvents = true;
+    // opt.Events.RaiseInformationEvents = true;
+    // opt.Events.RaiseFailureEvents = true;
+    // opt.Events.RaiseSuccessEvents = true;
     opt.EmitStaticAudienceClaim = true;
 })
 .AddInMemoryApiScopes(ApplicationConfig.ApiScopes)
@@ -33,6 +34,8 @@ builder.Services.AddIdentityServer(opt => {
 .AddDeveloperSigningCredential();
 
 builder.Services.AddScoped<AppService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+
 
 var app = builder.Build();
 

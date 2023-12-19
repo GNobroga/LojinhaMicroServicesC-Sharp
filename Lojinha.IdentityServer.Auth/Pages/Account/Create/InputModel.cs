@@ -7,15 +7,21 @@ using System.ComponentModel.DataAnnotations;
 namespace Template.Pages.Create;
 
 public class InputModel
-{
+{   
+    [Display(Name = "Usuário")]
     [Required]
     public string Username { get; set; }
 
+    [Display(Name = "Senha")]
     [Required]
     public string Password { get; set; }
 
-    public string Name { get; set; }
+    [Display(Name = "Nome")]
+    public string FirstName { get; set; }
     public string Email { get; set; }
+
+    [Display(Name = "Sobrenome")]
+    public string LastName { get; set; }
 
     public string? ReturnUrl { get; set; } 
 

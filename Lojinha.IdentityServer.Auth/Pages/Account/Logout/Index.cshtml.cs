@@ -36,7 +36,7 @@ public class Index : PageModel
             // if the user is not authenticated, then just show logged out page
             showLogoutPrompt = false;
         }
-        else
+        else 
         {
             var context = await _interaction.GetLogoutContextAsync(LogoutId);
             if (context?.ShowSignoutPrompt == false)
