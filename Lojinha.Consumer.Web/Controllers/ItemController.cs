@@ -17,7 +17,6 @@ public class ItemController : Controller
     [Authorize(Roles = Role.CLIENT)]
     public async Task<ViewResult> List() 
     {
-        Console.WriteLine("OII");
         var items = await _service.FindAll();
 
         return View(items);
