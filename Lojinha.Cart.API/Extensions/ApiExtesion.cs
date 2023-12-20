@@ -10,6 +10,7 @@ using Lojinha.Cart.API.Entities;
 using Lojinha.Cart.API.Repositories;
 using Lojinha.Cart.API.Utils;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lojinha.Cart.API.Extensions;
@@ -23,7 +24,7 @@ public static class ApiExtension
     //     public Task<CartDTO> FindByUserIdAsync(string userId);
     // public Task<CartDTO> SaveOrUpdateAsync(CartDTO record, string userId);
 
-        api.MapGet("/", async (HttpContext context, string userId, ICartRepository repository) => {
+        api.MapGet("/", async (HttpContext context, [FromQuery] string userId, ICartRepository repository) => {
             return Results.Ok(await repository.FindByUserIdAsync(userId));
         });
 
@@ -54,18 +55,11 @@ public static class ApiExtension
             map.Run(async context => {
 
                 var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+                var requestFailureResponse = new RequestFailureResponse();
 
-                if (error != null)
-                {
-                    await context.Response.WriteAsJsonAsync(new RequestFailureResponse {
-                        Message = error.Message
-                    });
-                } 
-                else 
-                {
-                    await context.Response.WriteAsJsonAsync(new RequestFailureResponse());
-                }
-            
+                requestFailureResponse.Message = error?.Message != null ?  error.Message : requestFailureResponse.Message;
+               
+                await context.Response.WriteAsJsonAsync(new RequestFailureResponse());
             });
         });
     }
