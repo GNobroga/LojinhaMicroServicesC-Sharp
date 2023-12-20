@@ -5,7 +5,7 @@
 namespace Lojinha.Cart.API.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCartTable : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,11 +16,11 @@ namespace Lojinha.Cart.API.Context.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: true),
                     price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    description = table.Column<string>(type: "TEXT", nullable: false),
-                    categoryname = table.Column<string>(name: "category_name", type: "TEXT", nullable: false),
-                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", nullable: false)
+                    description = table.Column<string>(type: "TEXT", nullable: true),
+                    categoryname = table.Column<string>(name: "category_name", type: "TEXT", nullable: true),
+                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,10 +33,11 @@ namespace Lojinha.Cart.API.Context.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    userid = table.Column<string>(name: "user_id", type: "TEXT", nullable: false),
+                    userid = table.Column<string>(name: "user_id", type: "TEXT", nullable: true),
                     couponcode = table.Column<string>(name: "coupon_code", type: "TEXT", nullable: true),
                     itemid = table.Column<long>(name: "item_id", type: "INTEGER", nullable: false),
-                    count = table.Column<long>(type: "INTEGER", nullable: false)
+                    count = table.Column<long>(type: "INTEGER", nullable: false),
+                    paid = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

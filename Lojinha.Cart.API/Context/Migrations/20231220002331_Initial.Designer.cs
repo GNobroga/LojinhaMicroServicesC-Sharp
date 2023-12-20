@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lojinha.Cart.API.Context.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20231219192710_AddCartTable")]
-    partial class AddCartTable
+    [Migration("20231220002331_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +37,11 @@ namespace Lojinha.Cart.API.Context.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("item_id");
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("paid");
+
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("user_id");
 
@@ -56,22 +59,18 @@ namespace Lojinha.Cart.API.Context.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("category_name");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("description");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("image_url");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("name");
 

@@ -14,6 +14,8 @@ if (app.Environment.IsDevelopment())
 
 app.AddApiEndpoints();
 
+app.ApiHandlerException();
+
 app.MapControllers();
 
 app.Run();

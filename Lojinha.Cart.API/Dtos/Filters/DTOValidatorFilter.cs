@@ -21,7 +21,7 @@ public class DTOValidatorFilter<T> : IEndpointFilter where T : class
 
         if (!result.IsValid)
         {
-            var invalidObject = new InvalidObject();
+            var invalidObject = new InvalidObjectResponse();
 
             result.Errors.ForEach(error => invalidObject.Messages.Add(error.ErrorMessage));
 
