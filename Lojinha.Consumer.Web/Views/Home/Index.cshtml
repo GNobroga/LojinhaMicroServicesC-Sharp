@@ -3,7 +3,10 @@
 }
 
 @model IEnumerable<ItemModel>
-
+    @if (TempData.ContainsKey("Message"))
+    {
+        <p class="text-success fs-3">@TempData["Message"]</p>
+    }
     <form>
         <div class="container row">
             @foreach (var item in Model)

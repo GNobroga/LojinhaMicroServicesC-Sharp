@@ -13,7 +13,12 @@ builder.Services.AddHttpClient("ItemAPI", opt => {
     opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ItemAPI"]!);
 }).AddHttpMessageHandler<RequestHandler>();
 
+builder.Services.AddHttpClient("CartAPI", opt => {
+    opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CartAPI"]!);
+}).AddHttpMessageHandler<RequestHandler>();
+
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddAuthentication(opt => {
     opt.DefaultScheme = "Cookies";

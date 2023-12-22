@@ -30,16 +30,19 @@ public class ItemModel
     [StringLength(300)]
     public string ImageUrl { get; set; } = string.Empty;
 
+    [Display(Name = "Quantidade")]
     [Range(1, 100, ErrorMessage = "A quantidade deve estar entre {1} e {2}")]
     public int Count { get; set; } = 1;
 
     public string SubstringName(int limit)
     {
+        if (string.IsNullOrEmpty(Name)) return string.Empty;
         return Name.Length < limit ? Name : Name[limit..];
     }
 
       public string SubstringDescription(int limit)
     {
+        if (string.IsNullOrEmpty(Description)) return string.Empty;
         return Description.Length < limit ? Description : Description[limit..];
     }
 }

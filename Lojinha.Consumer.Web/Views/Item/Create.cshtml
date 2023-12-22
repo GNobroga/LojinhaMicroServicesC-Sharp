@@ -44,6 +44,13 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+            <div class="col-2">
+                <label asp-for="@Model.Count" class="control-label pt-2" style="font-size:20px;"></label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="@Model.Count" class="form-control" />
+                <span asp-validation-for="@Model.Count" class="text-danger"></span>
+            </div>
 
             <div class="col-5 offset-2">
                 <a asp-action="List" class="btn-primary btn form-control ">Back to List</a>

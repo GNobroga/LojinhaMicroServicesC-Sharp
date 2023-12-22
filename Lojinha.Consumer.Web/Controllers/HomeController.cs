@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using Lojinha.Consumer.Web.Models;
 using Lojinha.Consumer.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +12,15 @@ namespace Lojinha.Consumer.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IItemService _itemService;
 
-        public HomeController(ILogger<HomeController> logger, IItemService itemService)
+        private readonly ICartService _cartService;
+
+        public HomeController(ILogger<HomeController> logger, IItemService itemService, ICartService cartService)
         {
             _logger = logger;
             _itemService = itemService;
+            _cartService = cartService;
         }
+
         public async Task<IActionResult> Index()
         {
 
@@ -24,14 +30,38 @@ namespace Lojinha.Consumer.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var item = await _itemService.FindById(id);
             return View(item);
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Details(ItemModel model)
+        {
 
+            var userId = User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
+            var item = await _itemService.FindById(model.Id);
+
+            Cart cart = new()
+            {
+                UserId = userId,
+                CartDetails = {
+                     new()
+                        {
+                            Item = item,
+                            ItemId = item.Id,
+                            Quantity = model.Count
+                        }
+                }
+            };
+
+            await _cartService.AddItemToCart(cart, userId);
+
+            TempData["Message"] = "Pedido adicionado no carrinho";
+            return RedirectToAction("Index");
+        }
 
 
         public IActionResult Privacy()
