@@ -9,6 +9,8 @@ public class ApiDbContext : DbContext
 
     public DbSet<CartDetail> CartDetails { get; set; }
 
+    public DbSet<Entities.Cart> Carts { get; set; }
+
     public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
     {}
 }

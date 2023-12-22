@@ -1,3 +1,5 @@
+
+namespace Lojinha.Cart.API.Utils;
 public class BaseApplicationResponse
 {
     public virtual string Title { get; set; } = "Cart API Error";

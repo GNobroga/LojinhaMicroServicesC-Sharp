@@ -12,6 +12,9 @@ public class CartDetail : BaseEntity
 
     public Item? Item { get; set; }
 
+    [Column("coupon_code")]
+    public string? CouponCode { get; set; }
+
     [Column("quantity")]
     public long Quantity { get; set; }
 
@@ -26,9 +29,8 @@ public class CartDetail : BaseEntity
         Quantity += quantity;
     }
 
-    public void MinusQuantity(long quantity)
+    public void AddCoupon(string coupon)
     {
-        if (Quantity > 0 && Quantity >= quantity)
-            Quantity -= quantity;
+        CouponCode = coupon;
     }
 }
