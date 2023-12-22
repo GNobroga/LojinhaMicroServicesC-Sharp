@@ -2,11 +2,13 @@
 using FluentValidation;
 using Lojinha.Cart.API.Context;
 using Lojinha.Cart.API.Dtos;
+using Lojinha.Cart.API.Dtos.Filters;
 using Lojinha.Cart.API.Dtos.Profiles;
 using Lojinha.Cart.API.Dtos.Validators;
 using Lojinha.Cart.API.Repositories;
 using Lojinha.Cart.API.Utils;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,18 +16,38 @@ namespace Lojinha.Cart.API.Extensions;
 
 public static class ApiExtension
 {
-    public static WebApplication AddApiEndpoints(this WebApplication app)
+    public static WebApplication ConfigureAPIEndpoints(this WebApplication app)
     {
-        var api = app.MapGroup("carts");
+        var api = app.MapGroup("api/v1/carts");
 
-        api.MapGet("/", async (HttpContext context, [FromQuery] string userId, ICartRepository repository) => {
+        api.MapGet("find-cart/{userId}", async (HttpContext context, [FromRoute] string userId, ICartRepository repository) => {
             return Results.Ok(await repository.FindByUserIdAsync(userId));
+        });
+
+        api.MapPost("add-cart/{userId}", async (HttpContext context, [FromRoute] string userId, [FromBody] CartDTO cartDTO, ICartRepository repository) => {
+            return Results.Created(
+                string.Concat(context.Request.GetDisplayUrl(), $"?userId={userId}"), 
+                await repository.SaveOrUpdateAsync(cartDTO, userId));
+        }).AddEndpointFilter<DTOValidatorFilter<CartDTO>>();
+
+        api.MapPut("update-cart/{userId}", async (HttpContext context, [FromRoute] string userId, [FromBody] CartDTO cartDTO, ICartRepository repository) => {
+            return Results.Ok(await repository.SaveOrUpdateAsync(cartDTO, userId));
+        }).AddEndpointFilter<DTOValidatorFilter<CartDTO>>();
+
+        
+        api.MapDelete("remove-cart/{userId}", async (HttpContext context, [FromRoute] string userId, ICartRepository repository) => {
+            return Results.Ok(await repository.RemoveAsync(userId));
+        });
+
+         
+        api.MapDelete("remove-cart-detail/{id:long}", async (HttpContext context, [FromRoute] long id, ICartRepository repository) => {
+            return Results.Ok(await repository.RemoveCartDetailsAsync(id));
         });
 
         return app;
     }
 
-    public static void ConfigureServices(this WebApplicationBuilder builder)
+    public static void ConfigureAPIServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

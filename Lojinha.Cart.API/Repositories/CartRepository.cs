@@ -40,12 +40,9 @@ public class CartRepository : ICartRepository
         return _mapper.Map<CartDTO>(cart);
     }
 
-    public async Task<bool> RemoveAsync(long cartId)
+    public async Task<bool> RemoveAsync(string userId)
     {
-        var cartDetail = await FindCartById(cartId);
-
-        cartDetail.Finished = !cartDetail.Finished;
-
+        _context.Carts.Remove(await FindCartByUserId(userId));
         return await _context.SaveChangesAsync() > 0;
     }
 
@@ -72,6 +69,8 @@ public class CartRepository : ICartRepository
 
             if (!ExistsCart(record.Id)) // Se existir o produto eu adiciono os Cart Details referentes 
             {
+                cart.UserId = userId;
+
                 if (!record.CartDetails.All(c => ExistsItem(c.ItemId)))
                 {
                     throw new Exception("Some products does not exist. Make sure they are registred");
@@ -95,7 +94,7 @@ public class CartRepository : ICartRepository
                         throw new Exception($"There is no Item with the specified Id {cartDetailDTO.ItemId}");
                     }
 
-                    // Se for Null significa que não existe cart detail com tal item 
+                    // Se for Null significa que não existe cart detail com tal item e,e
                     if (cartDetailRecovered is null)
                     {
                         var cartDetail = _mapper.Map<CartDetail>(cartDetailDTO);
@@ -124,10 +123,10 @@ public class CartRepository : ICartRepository
             throw new Exception($"Unable to find the cart detail with the specified Id {id}");
     }
 
-    private async Task<Entities.Cart> FindCartById(long id)
+    private async Task<Entities.Cart> FindCartByUserId(string userId)
     {
-        return await _context.Carts.FirstOrDefaultAsync(c => c.Id == id) ??
-            throw new Exception($"Unable to find the cart with the specified Id {id}");
+        return await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId && !c.Finished) ??
+            throw new Exception($"Unable to find the cart with the specified user Id {userId}");
     }
 
     private bool ExistsCart(long id)

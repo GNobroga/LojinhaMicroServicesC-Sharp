@@ -2,7 +2,7 @@ using Lojinha.Cart.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.ConfigureServices();
+builder.ConfigureAPIServices();
 
 var app = builder.Build();
 
@@ -12,7 +12,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.AddApiEndpoints();
+app.ConfigureAPIEndpoints();
 
 app.ApiHandlerException();
 

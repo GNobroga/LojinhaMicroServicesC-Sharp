@@ -9,10 +9,5 @@ public class CartDTOValidator : AbstractValidator<CartDTO>
     {
         RuleFor(c => c.CartDetails)
             .ForEach(cd => cd.SetValidator(new CartDetailDTOValidator()));
-        
-        RuleFor(c => c.UserId)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("The userId cannot be null or empty.");
     }
 }
