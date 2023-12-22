@@ -76,6 +76,10 @@ namespace Lojinha.Cart.API.Context.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("category_name");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT")
                         .HasColumnName("description");

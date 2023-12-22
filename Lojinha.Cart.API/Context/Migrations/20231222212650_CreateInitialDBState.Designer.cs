@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lojinha.Cart.API.Context.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20231222185938_CreateInitialDBState")]
+    [Migration("20231222212650_CreateInitialDBState")]
     partial class CreateInitialDBState
     {
         /// <inheritdoc />
@@ -78,6 +78,10 @@ namespace Lojinha.Cart.API.Context.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("TEXT")
                         .HasColumnName("category_name");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT")

@@ -61,47 +61,40 @@ public class CartRepository : ICartRepository
 
     public async Task<CartDTO> SaveOrUpdateAsync(CartDTO record, string userId)
     {
+
         using var transaction = await _context.Database.BeginTransactionAsync();
 
         try 
         {
             var cart = _mapper.Map<Entities.Cart>(record);
 
-            if (!ExistsCart(record.Id)) // Se existir o produto eu adiciono os Cart Details referentes 
-            {
+            if (!ExistsCart(userId)) // Se existir o produto eu adiciono os Cart Details referentes 
+            {   
+
+                cart.Id = default;
                 cart.UserId = userId;
-
-                if (!record.CartDetails.All(c => ExistsItem(c.ItemId)))
-                {
-                    throw new Exception("Some products does not exist. Make sure they are registred");
-                }
-
                 await _context.Carts.AddAsync(cart);
             }
             else 
             {
-                cart = (await _context.Carts.FindAsync(record.Id))!; 
+                cart = (await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId && !c.Finished))!; 
 
                 foreach (var cartDetailDTO in record.CartDetails)
                 {
-                    var cartDetailRecovered = cart.CartDetails.FirstOrDefault(c => c.ItemId == cartDetailDTO.ItemId);
+                    var cartDetailRecovered = await _context.CartDetails.FirstOrDefaultAsync(
+                        c => c.ItemId.Equals(cartDetailDTO.ItemId) && c.CartId.Equals(cart.Id));
 
-                    // Caso já exista o item cadastrado eu apenas incremento ou decremento a quantidade
-                    cartDetailRecovered?.PlusQuantity(cartDetailDTO.Quantity);
 
-                    if (ExistsItem(cartDetailDTO.ItemId))
+                    if (cartDetailRecovered is not null)
                     {
-                        throw new Exception($"There is no Item with the specified Id {cartDetailDTO.ItemId}");
+                        cartDetailRecovered.PlusQuantity(cartDetailDTO.Quantity);
                     }
-
-                    // Se for Null significa que não existe cart detail com tal item e,e
-                    if (cartDetailRecovered is null)
+                    else 
                     {
                         var cartDetail = _mapper.Map<CartDetail>(cartDetailDTO);
-
                         cartDetail.Id = default;
-
-                        cart.CartDetails.Add(cartDetail);
+                        cartDetail.CartId = cart.Id;
+                        await _context.CartDetails.AddAsync(cartDetail);
                     }
                 }
             }
@@ -117,6 +110,15 @@ public class CartRepository : ICartRepository
         }
     }
 
+    public async Task<bool> CheckoutAsync(string userId)
+    {
+        var cart = await FindCartByUserId(userId);
+
+        cart.Finished = !cart.Finished;
+
+        return await _context.SaveChangesAsync() > 0;
+    }
+
     private async Task<CartDetail> FindCartDetailById(long id)
     {
         return await _context.CartDetails.FirstOrDefaultAsync(cd => cd.Id == id) ??
@@ -129,9 +131,9 @@ public class CartRepository : ICartRepository
             throw new Exception($"Unable to find the cart with the specified user Id {userId}");
     }
 
-    private bool ExistsCart(long id)
+    private bool ExistsCart(string id)
     {
-        return _context.Carts.Any(c => c.Id == id);
+        return _context.Carts.Any(c => c.UserId == id && !c.Finished);
     }
 
     private bool ExistsItem(long id)

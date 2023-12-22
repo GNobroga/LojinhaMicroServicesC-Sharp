@@ -34,7 +34,8 @@ namespace Lojinha.Cart.API.Context.Migrations
                     price = table.Column<decimal>(type: "TEXT", nullable: false),
                     description = table.Column<string>(type: "TEXT", nullable: true),
                     categoryname = table.Column<string>(name: "category_name", type: "TEXT", nullable: true),
-                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", nullable: true)
+                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", nullable: true),
+                    count = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

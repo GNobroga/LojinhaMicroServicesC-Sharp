@@ -16,6 +16,8 @@ app.ConfigureAPIEndpoints();
 
 app.ApiHandlerException();
 
+app.UseCors(cors => cors.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+
 app.MapControllers();
 
 app.Run();

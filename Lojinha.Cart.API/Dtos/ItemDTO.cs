@@ -6,5 +6,6 @@ public record ItemDTO(
     decimal Price,
     string Description,
     string CategoryName,
-    string ImageUrl
+    string ImageUrl,
+    int Count
 );

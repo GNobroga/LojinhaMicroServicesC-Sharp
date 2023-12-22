@@ -4,12 +4,13 @@ namespace Lojinha.Cart.API.Repositories;
 
 public interface ICartRepository
 {
-    public Task<CartDTO> FindByUserIdAsync(string userId);
-    public Task<CartDTO> SaveOrUpdateAsync(CartDTO record, string userId);
-    public Task<bool> RemoveAsync(string userId);
+    Task<CartDTO> FindByUserIdAsync(string userId);
+    Task<CartDTO> SaveOrUpdateAsync(CartDTO record, string userId);
+    Task<bool> RemoveAsync(string userId);
 
-    public Task<bool> RemoveCartDetailsAsync(long cartDetailId);
-    public Task<bool> ApplyCouponAsync(long cartDetailId, string couponCode);
-    public Task<bool> RemoveCouponAsync(long cartDetailId);
-    public Task<bool> ClearAsync(string userId);
+    Task<bool> RemoveCartDetailsAsync(long cartDetailId);
+    Task<bool> ApplyCouponAsync(long cartDetailId, string couponCode);
+    Task<bool> RemoveCouponAsync(long cartDetailId);
+    Task<bool> ClearAsync(string userId);
+    Task<bool> CheckoutAsync(string userId);
 }

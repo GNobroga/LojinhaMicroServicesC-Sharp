@@ -38,7 +38,6 @@ public static class ApiExtension
         api.MapDelete("remove-cart/{userId}", async (HttpContext context, [FromRoute] string userId, ICartRepository repository) => {
             return Results.Ok(await repository.RemoveAsync(userId));
         });
-
          
         api.MapDelete("remove-cart-detail/{id:long}", async (HttpContext context, [FromRoute] long id, ICartRepository repository) => {
             return Results.Ok(await repository.RemoveCartDetailsAsync(id));
@@ -48,7 +47,8 @@ public static class ApiExtension
     }
 
     public static void ConfigureAPIServices(this WebApplicationBuilder builder)
-    {
+    {   
+        builder.Services.AddCors();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
