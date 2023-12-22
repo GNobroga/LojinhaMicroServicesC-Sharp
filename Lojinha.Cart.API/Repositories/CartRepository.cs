@@ -34,7 +34,7 @@ public class CartRepository : ICartRepository
 
     public async Task<CartDTO> FindByUserIdAsync(string userId)
     {
-        var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId && !c.Finished) ??
+        var cart = await _context.Carts.Include(c => c.CartDetails).ThenInclude(c => c.Item).AsNoTracking().FirstOrDefaultAsync(c => c.UserId == userId && !c.Finished) ??
             throw new Exception($"Unable to find the cart with the specified user Id {userId}");
 
         return _mapper.Map<CartDTO>(cart);
@@ -94,6 +94,9 @@ public class CartRepository : ICartRepository
                         var cartDetail = _mapper.Map<CartDetail>(cartDetailDTO);
                         cartDetail.Id = default;
                         cartDetail.CartId = cart.Id;
+                        if (ExistsItem(cartDetailDTO.ItemId))
+                            cartDetail.Item = null;
+                        
                         await _context.CartDetails.AddAsync(cartDetail);
                     }
                 }
