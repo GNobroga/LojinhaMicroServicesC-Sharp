@@ -19,22 +19,16 @@ public class CartRepository : ICartRepository
 
     public async Task<bool> ApplyCouponAsync(long cartDetailId, string coupon)
     {
-        var cartDetail = await _context.CartDetails.FirstOrDefaultAsync(cd => cd.Id == cartDetailId) ??
-            throw new Exception($"Unable to find the cart detail with the specified Id {cartDetailId}");
-
+        var cartDetail = await FindCartDetailById(cartDetailId);
         cartDetail.AddCoupon(coupon);
-
         return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> ClearAsync(string userId)
     {
-
         var cart = await _context.Carts.SingleOrDefaultAsync(c => c.UserId == userId) ??
          throw new Exception($"Unable to find the cart with the specified user Id {userId}");
-
         _context.CartDetails.RemoveRange(cart.CartDetails);
-
         return await _context.SaveChangesAsync() > 0;
     }
 
@@ -47,8 +41,7 @@ public class CartRepository : ICartRepository
 
     public async Task<bool> RemoveAsync(long cartId)
     {
-        var cartDetail = await _context.Carts.FirstOrDefaultAsync(c => c.Id == cartId && !c.Finished) ??
-            throw new Exception($"Unable to find the cart with the specified Id {cartId}");
+        var cartDetail = await FindCartById(cartId);
 
         cartDetail.Finished = !cartDetail.Finished;
 
@@ -57,11 +50,14 @@ public class CartRepository : ICartRepository
 
     public async Task<bool> RemoveCouponAsync(long cartDetailId)
     {
-        var cartDetail = await _context.CartDetails.FirstOrDefaultAsync(cd => cd.Id == cartDetailId) ??
-            throw new Exception($"Unable to find the cart detail with the specified Id {cartDetailId}");
-        
+        var cartDetail = await FindCartDetailById(cartDetailId);
         cartDetail.AddCoupon(string.Empty);
+        return await _context.SaveChangesAsync() > 0;
+    }
 
+    public async Task<bool> RemoveCartDetailsAsync(long cartDetailId)
+    {
+        _context.CartDetails.Remove(await FindCartDetailById(cartDetailId));
         return await _context.SaveChangesAsync() > 0;
     }
 
@@ -73,7 +69,7 @@ public class CartRepository : ICartRepository
         {
             var cart = _mapper.Map<Entities.Cart>(record);
 
-            if (!ExistsCart(record.Id))
+            if (!ExistsCart(record.Id)) // Se existir o produto eu adiciono os Cart Details referentes 
             {
                 if (!record.CartDetails.All(c => ExistsItem(c.ItemId)))
                 {
@@ -90,6 +86,7 @@ public class CartRepository : ICartRepository
                 {
                     var cartDetailRecovered = cart.CartDetails.FirstOrDefault(c => c.ItemId == cartDetailDTO.ItemId);
 
+                    // Caso já exista o item cadastrado eu apenas incremento ou decremento a quantidade
                     cartDetailRecovered?.PlusQuantity(cartDetailDTO.Quantity);
 
                     if (ExistsItem(cartDetailDTO.ItemId))
@@ -97,6 +94,7 @@ public class CartRepository : ICartRepository
                         throw new Exception($"There is no Item with the specified Id {cartDetailDTO.ItemId}");
                     }
 
+                    // Se for Null significa que não existe cart detail com tal item 
                     if (cartDetailRecovered is null)
                     {
                         var cartDetail = _mapper.Map<CartDetail>(cartDetailDTO);
@@ -117,6 +115,18 @@ public class CartRepository : ICartRepository
             await transaction.RollbackAsync();
             throw;
         }
+    }
+
+    private async Task<CartDetail> FindCartDetailById(long id)
+    {
+        return await _context.CartDetails.FirstOrDefaultAsync(cd => cd.Id == id) ??
+            throw new Exception($"Unable to find the cart detail with the specified Id {id}");
+    }
+
+    private async Task<Entities.Cart> FindCartById(long id)
+    {
+        return await _context.Carts.FirstOrDefaultAsync(c => c.Id == id) ??
+            throw new Exception($"Unable to find the cart with the specified Id {id}");
     }
 
     private bool ExistsCart(long id)

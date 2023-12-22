@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lojinha.Cart.API.Entities;
 
-[Table("cart")]
+[Table("carts")]
 public class Cart : BaseEntity
 {
     [Column("user_id")]

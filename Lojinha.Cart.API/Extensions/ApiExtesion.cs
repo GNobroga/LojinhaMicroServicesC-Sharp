@@ -19,10 +19,7 @@ public static class ApiExtension
 {
     public static WebApplication AddApiEndpoints(this WebApplication app)
     {
-        var api = app.MapGroup("cart");
-
-    //     public Task<CartDTO> FindByUserIdAsync(string userId);
-    // public Task<CartDTO> SaveOrUpdateAsync(CartDTO record, string userId);
+        var api = app.MapGroup("carts");
 
         api.MapGet("/", async (HttpContext context, [FromQuery] string userId, ICartRepository repository) => {
             return Results.Ok(await repository.FindByUserIdAsync(userId));
@@ -37,9 +34,7 @@ public static class ApiExtension
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAutoMapper(opt => {
-            opt.AddProfile<MappingProfile>();
-        });
+        builder.Services.AddAutoMapper(opt => opt.AddProfile<MappingProfile>());
 
         builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<IValidator<CartDetailDTO>, CartDetailDTOValidator>();
