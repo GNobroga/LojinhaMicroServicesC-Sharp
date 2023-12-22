@@ -16,15 +16,34 @@ namespace Lojinha.Cart.API.Context.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
 
+            modelBuilder.Entity("Lojinha.Cart.API.Entities.Cart", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Finished")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("finished");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("carts");
+                });
+
             modelBuilder.Entity("Lojinha.Cart.API.Entities.CartDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("Count")
+                    b.Property<long>("CartId")
                         .HasColumnType("INTEGER")
-                        .HasColumnName("count");
+                        .HasColumnName("cart_id");
 
                     b.Property<string>("CouponCode")
                         .HasColumnType("TEXT")
@@ -34,15 +53,13 @@ namespace Lojinha.Cart.API.Context.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("item_id");
 
-                    b.Property<bool>("Paid")
+                    b.Property<long>("Quantity")
                         .HasColumnType("INTEGER")
-                        .HasColumnName("paid");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("user_id");
+                        .HasColumnName("quantity");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ItemId");
 
@@ -82,13 +99,26 @@ namespace Lojinha.Cart.API.Context.Migrations
 
             modelBuilder.Entity("Lojinha.Cart.API.Entities.CartDetail", b =>
                 {
+                    b.HasOne("Lojinha.Cart.API.Entities.Cart", "Cart")
+                        .WithMany("CartDetails")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Lojinha.Cart.API.Entities.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Cart");
+
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Lojinha.Cart.API.Entities.Cart", b =>
+                {
+                    b.Navigation("CartDetails");
                 });
 #pragma warning restore 612, 618
         }

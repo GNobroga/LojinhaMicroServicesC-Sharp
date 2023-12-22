@@ -1,12 +1,9 @@
 
-using AutoMapper;
 using FluentValidation;
 using Lojinha.Cart.API.Context;
 using Lojinha.Cart.API.Dtos;
-using Lojinha.Cart.API.Dtos.Filters;
 using Lojinha.Cart.API.Dtos.Profiles;
 using Lojinha.Cart.API.Dtos.Validators;
-using Lojinha.Cart.API.Entities;
 using Lojinha.Cart.API.Repositories;
 using Lojinha.Cart.API.Utils;
 using Microsoft.AspNetCore.Diagnostics;
@@ -52,9 +49,9 @@ public static class ApiExtension
                 var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
                 var requestFailureResponse = new RequestFailureResponse();
 
-                requestFailureResponse.Message = error?.Message != null ?  error.Message : requestFailureResponse.Message;
+                requestFailureResponse.Message = !string.IsNullOrEmpty(error?.Message) ?  error.Message : requestFailureResponse.Message;
                
-                await context.Response.WriteAsJsonAsync(new RequestFailureResponse());
+                await context.Response.WriteAsJsonAsync(requestFailureResponse);
             });
         });
     }

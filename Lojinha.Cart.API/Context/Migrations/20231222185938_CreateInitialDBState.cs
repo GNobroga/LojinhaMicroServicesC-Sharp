@@ -5,11 +5,25 @@
 namespace Lojinha.Cart.API.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class CreateInitialDBState : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "carts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    userid = table.Column<string>(name: "user_id", type: "TEXT", nullable: true),
+                    finished = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_carts", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "items",
                 columns: table => new
@@ -33,15 +47,20 @@ namespace Lojinha.Cart.API.Context.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    userid = table.Column<string>(name: "user_id", type: "TEXT", nullable: true),
-                    couponcode = table.Column<string>(name: "coupon_code", type: "TEXT", nullable: true),
                     itemid = table.Column<long>(name: "item_id", type: "INTEGER", nullable: false),
-                    count = table.Column<long>(type: "INTEGER", nullable: false),
-                    paid = table.Column<bool>(type: "INTEGER", nullable: false)
+                    couponcode = table.Column<string>(name: "coupon_code", type: "TEXT", nullable: true),
+                    quantity = table.Column<long>(type: "INTEGER", nullable: false),
+                    cartid = table.Column<long>(name: "cart_id", type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_cart_details", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_cart_details_carts_cart_id",
+                        column: x => x.cartid,
+                        principalTable: "carts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_cart_details_items_item_id",
                         column: x => x.itemid,
@@ -49,6 +68,11 @@ namespace Lojinha.Cart.API.Context.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_cart_details_cart_id",
+                table: "cart_details",
+                column: "cart_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_cart_details_item_id",
@@ -61,6 +85,9 @@ namespace Lojinha.Cart.API.Context.Migrations
         {
             migrationBuilder.DropTable(
                 name: "cart_details");
+
+            migrationBuilder.DropTable(
+                name: "carts");
 
             migrationBuilder.DropTable(
                 name: "items");
