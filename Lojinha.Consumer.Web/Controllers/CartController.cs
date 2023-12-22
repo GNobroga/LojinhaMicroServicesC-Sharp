@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Lojinha.Consumer.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lojinha.Consumer.Web.Controllers;
@@ -16,13 +17,21 @@ public class CartController : Controller
         _cartService = cartService;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (userId is null) return RedirectToAction("List", "Index");        
         var response = await _cartService.FindCartByUserId(userId);
-        
+
         response.Total = response.CartDetails.Sum(c => c.Item.Price *  c.Quantity);
         return View(response);
+    }
+
+    public async Task<IActionResult> Remove(long id)
+    {
+        var response = await _cartService.RemoveItemFromCart(id);
+
+        return RedirectToAction(nameof(Index));
     }
 }

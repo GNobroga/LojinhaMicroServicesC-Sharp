@@ -44,7 +44,7 @@
                     
                     @foreach (var item in Model.CartDetails)
                     {
-                        <div class="row h-100">
+                        <div class="row h-100 position-relative border p-3">
                             <div class="col-4 col-md-2 text-center py-2">
                                 <img src="@item.Item.ImageUrl" class="rounded" width="100%"/>
                             </div>
@@ -64,17 +64,19 @@
                                     @item.Quantity
                                 </span>
                             </div>
-                            <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                            <div class="col-2 col-lg-1 p-0 pt-lg-4 text-end">
                                 <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-outline-danger">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </div>
-                            <div class="col-12">
-                                <span>Coupon:</span>
-                               
-                                <button type="submit" asp-action="ApplyCoupon" class="btn-success">
-                                    Apply
-                                </button>
+                            <div class="position-absolute top-0 d-flex justify-content-end gap-2">
+                                <div class="me-4">
+                                    <span>Coupon:</span>
+                                    <input asp-for="@item.CouponCode">
+                                    <button type="submit" asp-action="ApplyCoupon" class="btn-success">
+                                        Apply
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <hr/>

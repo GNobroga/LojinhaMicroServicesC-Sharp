@@ -3,7 +3,6 @@ using Lojinha.Consumer.Web.Interceptors;
 using Lojinha.Consumer.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +14,10 @@ builder.Services.AddHttpClient("ItemAPI", opt => {
 
 builder.Services.AddHttpClient("CartAPI", opt => {
     opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CartAPI"]!);
+}).AddHttpMessageHandler<RequestHandler>();
+
+builder.Services.AddHttpClient("CouponAPI", opt => {
+    opt.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponAPI"]!);
 }).AddHttpMessageHandler<RequestHandler>();
 
 builder.Services.AddScoped<IItemService, ItemService>();

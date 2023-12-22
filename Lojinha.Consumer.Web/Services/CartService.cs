@@ -54,9 +54,10 @@ public class CartService : ICartService
         throw new NotImplementedException();
     }
 
-    public Task<bool> RemoveItemFromCart(long cartDetailId)
+    public async Task<bool> RemoveItemFromCart(long cartDetailId)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.MakeDeleteRequest($"remove-cart-detail/{cartDetailId}");
+        return true;
     }
 
     public async Task<Cart> UpdateCart(Cart cart, string userId)
