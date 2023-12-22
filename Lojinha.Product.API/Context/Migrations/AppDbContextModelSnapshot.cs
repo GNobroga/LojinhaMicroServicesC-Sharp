@@ -29,6 +29,10 @@ namespace Lojinha.Product.API.Context.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("category_name");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("TEXT")
@@ -58,6 +62,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 1L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Celular",
                             Price = 0m
                         },
@@ -65,6 +70,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 2L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Smartphone",
                             Price = 0m
                         },
@@ -72,6 +78,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 3L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Computer",
                             Price = 0m
                         });

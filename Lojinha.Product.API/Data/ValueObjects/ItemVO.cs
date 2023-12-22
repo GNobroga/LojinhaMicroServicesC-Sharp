@@ -22,5 +22,7 @@ public class ItemVO
 
     [StringLength(300, ErrorMessage = "A {0} só pode ter no máximo 300 caracteres")]
     public string? ImageUrl { get; set; }
+
+    public int Count { get; set; } = 1;
    
 }

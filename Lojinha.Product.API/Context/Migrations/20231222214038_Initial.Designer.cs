@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lojinha.Product.API.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231215190316_CreateTable")]
-    partial class CreateTable
+    [Migration("20231222214038_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace Lojinha.Product.API.Context.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT")
                         .HasColumnName("category_name");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("count");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -61,6 +65,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 1L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Celular",
                             Price = 0m
                         },
@@ -68,6 +73,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 2L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Smartphone",
                             Price = 0m
                         },
@@ -75,6 +81,7 @@ namespace Lojinha.Product.API.Context.Migrations
                         {
                             Id = 3L,
                             CategoryName = "Eletrônicos",
+                            Count = 0,
                             Name = "Computer",
                             Price = 0m
                         });

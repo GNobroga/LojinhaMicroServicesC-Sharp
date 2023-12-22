@@ -7,7 +7,7 @@
 namespace Lojinha.Product.API.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTable : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,8 @@ namespace Lojinha.Product.API.Context.Migrations
                     price = table.Column<decimal>(type: "TEXT", nullable: false),
                     description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     categoryname = table.Column<string>(name: "category_name", type: "TEXT", maxLength: 50, nullable: false),
-                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", maxLength: 300, nullable: true)
+                    imageurl = table.Column<string>(name: "image_url", type: "TEXT", maxLength: 300, nullable: true),
+                    count = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,12 +32,12 @@ namespace Lojinha.Product.API.Context.Migrations
 
             migrationBuilder.InsertData(
                 table: "items",
-                columns: new[] { "id", "category_name", "description", "image_url", "name", "price" },
+                columns: new[] { "id", "category_name", "count", "description", "image_url", "name", "price" },
                 values: new object[,]
                 {
-                    { 1L, "Eletrônicos", null, null, "Celular", 0m },
-                    { 2L, "Eletrônicos", null, null, "Smartphone", 0m },
-                    { 3L, "Eletrônicos", null, null, "Computer", 0m }
+                    { 1L, "Eletrônicos", 0, null, null, "Celular", 0m },
+                    { 2L, "Eletrônicos", 0, null, null, "Smartphone", 0m },
+                    { 3L, "Eletrônicos", 0, null, null, "Computer", 0m }
                 });
         }
 

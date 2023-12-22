@@ -28,4 +28,7 @@ public class Item : BaseEntity
     [Column("image_url")]
     [StringLength(300)]
     public string? ImageUrl { get; set; }
+
+    [Column("count")]
+    public int Count { get; set; }
 }
