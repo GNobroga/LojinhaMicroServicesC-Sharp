@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Lojinha.Cart.API.Entities;
 
 [Table("items")]
-public class Item : Base
+public class Item : BaseEntity
 {   
     [Column("name")]
     public string? Name { get; set; }

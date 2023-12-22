@@ -7,15 +7,18 @@ public class CartDetailDTOValidator : AbstractValidator<CartDetailDTO>
 
     public CartDetailDTOValidator()
     {
-        RuleFor(cd => cd.UserId)
-            .NotEmpty().WithMessage("O 'userId' não pode ser vazio.")
-            .NotNull().WithMessage("O 'userId' não pode ser null.");
+        RuleFor(cd => cd.CartId)
+            .NotEmpty()
+            .NotNull()
+            .WithMessage("The cardId is empty or null");
 
         RuleFor(cd => cd.ItemId)
-            .NotEmpty().WithMessage("O 'ItemId' não pode ser vazio.")
-            .NotNull().WithMessage("O 'ItemId' não pode ser null.");
+            .NotEmpty()
+            .NotNull()
+            .WithMessage("The itemId is empty or null");
 
-        RuleFor(cd => cd.Count)
-           .GreaterThan(0).WithMessage("O 'count' não pode ser menor ou igual a zero");   
+        RuleFor(cd => cd.Quantity)
+           .GreaterThan(0)
+           .WithMessage("The quantity needs be greather than or equal to zero");   
     }
 }

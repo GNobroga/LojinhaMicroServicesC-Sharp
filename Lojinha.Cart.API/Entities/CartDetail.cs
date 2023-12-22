@@ -2,15 +2,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lojinha.Cart.API.Entities;
 
-// Items Cupom
 [Table("cart_details")]
-public class CartDetail : Base
+public class CartDetail : BaseEntity
 {   
-    [Column("user_id")]
-    public string? UserId { get; set; }
-
-    [Column("coupon_code")]
-    public string? CouponCode { get; set; }
 
     [Column("item_id")]
     [ForeignKey(nameof(Item))]
@@ -18,10 +12,23 @@ public class CartDetail : Base
 
     public Item? Item { get; set; }
 
-    [Column("count")]
-    public long Count { get; set; }
+    [Column("quantity")]
+    public long Quantity { get; set; }
 
-    [Column("paid")]
-    public bool Paid { get; set; }
+    [Column("cart_id")]
+    public long CartId { get; set; }
 
+    [ForeignKey("CartId")]
+    public Cart? Cart { get; set; }
+
+    public void PlusQuantity(long quantity)
+    {
+        Quantity += quantity;
+    }
+
+    public void MinusQuantity(long quantity)
+    {
+        if (Quantity > 0 && Quantity >= quantity)
+            Quantity -= quantity;
+    }
 }

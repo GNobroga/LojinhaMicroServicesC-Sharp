@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lojinha.Cart.API.Entities;
 
-public class Base 
+public class BaseEntity
 {   
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
