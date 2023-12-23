@@ -1,6 +1,5 @@
 
 using AutoMapper;
-using Lojinha.Product.API.Repositories;
 
 namespace Lojinha.Product.API.Services;
 

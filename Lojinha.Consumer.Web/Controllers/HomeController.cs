@@ -60,7 +60,7 @@ namespace Lojinha.Consumer.Web.Controllers
             await _cartService.AddItemToCart(cart, userId);
 
             TempData["Message"] = "Pedido adicionado no carrinho";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Cart");
         }
 
 

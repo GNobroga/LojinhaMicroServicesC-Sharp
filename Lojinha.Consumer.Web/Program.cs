@@ -22,6 +22,7 @@ builder.Services.AddHttpClient("CouponAPI", opt => {
 
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 
 builder.Services.AddAuthentication(opt => {
     opt.DefaultScheme = "Cookies";

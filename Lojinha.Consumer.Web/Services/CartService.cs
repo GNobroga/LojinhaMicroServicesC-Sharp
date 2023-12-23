@@ -21,9 +21,10 @@ public class CartService : ICartService
         return await response.ConvertJsonToModel<Cart>();
     }   
 
-    public Task<bool> ApplyCoupon(long cartDetailId, string couponCode)
+    public async Task<bool> ApplyCoupon(long cartDetailId, string couponCode)
     {
-        throw new NotImplementedException();
+        await _httpClient.MakeGetRequest($"add-cupom/{cartDetailId}/{couponCode}");
+        return true;
     }
 
     public Task<bool> CheckoutCart(string userId)
@@ -49,9 +50,10 @@ public class CartService : ICartService
         return true;
     }
 
-    public Task<bool> RemoveCoupon(long cartDetailId)
+    public async Task<bool> RemoveCoupon(long cartDetailId)
     {
-        throw new NotImplementedException();
+       await _httpClient.MakeGetRequest($"remove-cupom/{cartDetailId}");
+       return true;
     }
 
     public async Task<bool> RemoveItemFromCart(long cartDetailId)

@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Lojinha.Consumer.Web.Models;
 using Lojinha.Consumer.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,13 @@ public class CartController : Controller
 
     private readonly ICartService _cartService;
 
-    public CartController(IItemService itemService, ICartService cartService)
+    private readonly ICouponService _couponService;
+
+    public CartController(IItemService itemService, ICartService cartService, ICouponService couponService)
     {
         _itemService = itemService;
         _cartService = cartService;
+        _couponService = couponService;
     }
 
     [Authorize]
@@ -24,7 +28,23 @@ public class CartController : Controller
         if (userId is null) return RedirectToAction("List", "Index");        
         var response = await _cartService.FindCartByUserId(userId);
 
-        response.Total = response.CartDetails.Sum(c => c.Item.Price *  c.Quantity);
+        foreach (var cartDetail in response.CartDetails)
+        {
+            Coupon coupon = default;
+            var total = cartDetail.Item!.Price *  cartDetail.Quantity;
+
+            if (!string.IsNullOrEmpty(cartDetail.CouponCode))
+            {
+               coupon = await _couponService.GetCoupon(cartDetail.CouponCode);
+                if (coupon is not null)
+                {
+                    total -= total * coupon.Discount / 100;
+                }
+            }
+            
+
+            response.Total += total;
+        }
         return View(response);
     }
 
@@ -34,4 +54,19 @@ public class CartController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<ActionResult> RemoveCoupon(long cartDetailId)
+    {
+        var response = await _cartService.RemoveCoupon(cartDetailId);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> ApplyCoupon(long cartDetailId, CartDetail cartDetail)
+    {   
+        if (string.IsNullOrEmpty(cartDetail.CouponCode)) return RedirectToAction(nameof(Index));
+        var response = await _cartService.ApplyCoupon(cartDetailId, cartDetail.CouponCode!);
+        return RedirectToAction(nameof(Index));
+    }
+
 }

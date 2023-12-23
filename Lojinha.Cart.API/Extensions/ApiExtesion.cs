@@ -43,6 +43,16 @@ public static class ApiExtension
             return Results.Ok(await repository.RemoveCartDetailsAsync(id));
         });
 
+           
+        api.MapGet("add-cupom/{id:long}/{couponCode}", async (HttpContext context, [FromRoute] long id, [FromRoute] string couponCode, ICartRepository repository) => {
+            return Results.Ok(await repository.ApplyCouponAsync(id, couponCode));
+        });
+
+         api.MapGet("remove-cupom/{id:long}", async (HttpContext context, [FromRoute] long id, ICartRepository repository) => {
+            return Results.Ok(await repository.RemoveCouponAsync(id));
+        });
+
+
         return app;
     }
 

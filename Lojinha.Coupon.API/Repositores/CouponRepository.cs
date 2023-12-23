@@ -20,10 +20,6 @@ public class CouponRepository : ICouponRepository
     public async Task<CouponVO> GetByCode(string code)
     {
         var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == code);
-
-        if (coupon is null)
-            throw new Exception("The coupon does not exist");
-
         return _mapper.Map<CouponVO>(coupon);
     }
 }
