@@ -12,4 +12,6 @@ public class Cart : BaseEntity
     public bool Finished { get; set; }
 
     public List<CartDetail> CartDetails { get; set; } = new();
+
+    public void ConfirmCheckout() => Finished = true;
 }

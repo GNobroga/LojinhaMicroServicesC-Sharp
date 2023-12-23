@@ -12,4 +12,6 @@ public class CartDetail
     public string? CouponCode { get; set; } 
 
     public long Quantity { get; set; }
+
+    public decimal Discount { get; set; }
 }

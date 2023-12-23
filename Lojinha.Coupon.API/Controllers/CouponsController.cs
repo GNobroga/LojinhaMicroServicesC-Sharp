@@ -19,17 +19,7 @@ public  class CouponsController : ControllerBase
     [HttpGet("{code}")]
     public async Task<ActionResult<CouponVO>> Get(string code)
     {
-        try 
-        {
-            var coupon = await _repository.GetByCode(code);
-            return coupon;
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new {
-                Title = "Error",
-                ex.Message
-            });
-        }
+        var coupon = await _repository.GetByCode(code);
+        return Ok(coupon);
     }
 }

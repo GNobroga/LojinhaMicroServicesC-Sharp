@@ -27,9 +27,11 @@ public class CartService : ICartService
         return true;
     }
 
-    public Task<bool> CheckoutCart(string userId)
+    public async Task<bool> CheckoutCart(Cart cart)
     {
-        throw new NotImplementedException();
+        await _httpClient.MakePostRequest("checkout", cart);
+
+        return true;
     }
 
     public Task<bool> ClearCart(string userId)

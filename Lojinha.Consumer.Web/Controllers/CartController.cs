@@ -25,17 +25,21 @@ public class CartController : Controller
     public async Task<IActionResult> Index()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+
         if (userId is null) return RedirectToAction("List", "Index");        
+
         var response = await _cartService.FindCartByUserId(userId);
 
         foreach (var cartDetail in response.CartDetails)
         {
-            Coupon coupon = default;
+            Coupon coupon;
+
             var total = cartDetail.Item!.Price *  cartDetail.Quantity;
 
             if (!string.IsNullOrEmpty(cartDetail.CouponCode))
             {
                coupon = await _couponService.GetCoupon(cartDetail.CouponCode);
+
                 if (coupon is not null)
                 {
                     total -= total * coupon.Discount / 100;
@@ -64,8 +68,11 @@ public class CartController : Controller
     [HttpPost]
     public async Task<ActionResult> ApplyCoupon(long cartDetailId, CartDetail cartDetail)
     {   
-        if (string.IsNullOrEmpty(cartDetail.CouponCode)) return RedirectToAction(nameof(Index));
-        var response = await _cartService.ApplyCoupon(cartDetailId, cartDetail.CouponCode!);
+        if (string.IsNullOrEmpty(cartDetail.CouponCode)) 
+            return RedirectToAction(nameof(Index));
+
+        var response = await _cartService.ApplyCoupon(cartDetailId, cartDetail.CouponCode);
+
         return RedirectToAction(nameof(Index));
     }
 

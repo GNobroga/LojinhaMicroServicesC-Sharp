@@ -17,5 +17,5 @@ public interface ICartService
     Task<bool> ApplyCoupon(long cartDetailId, string couponCode);
     Task<bool> RemoveCoupon(long cartDetailId);
     Task<bool> ClearCart(string userId);
-    Task<bool> CheckoutCart(string userId);
+    Task<bool> CheckoutCart(Cart cart);
 }

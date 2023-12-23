@@ -94,6 +94,7 @@ public class CartRepository : ICartRepository
                         var cartDetail = _mapper.Map<CartDetail>(cartDetailDTO);
                         cartDetail.Id = default;
                         cartDetail.CartId = cart.Id;
+                        
                         if (ExistsItem(cartDetailDTO.ItemId))
                             cartDetail.Item = null;
                         
@@ -116,9 +117,7 @@ public class CartRepository : ICartRepository
     public async Task<bool> CheckoutAsync(string userId)
     {
         var cart = await FindCartByUserId(userId);
-
-        cart.Finished = !cart.Finished;
-
+        cart.ConfirmCheckout();
         return await _context.SaveChangesAsync() > 0;
     }
 

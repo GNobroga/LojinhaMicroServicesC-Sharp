@@ -5,6 +5,7 @@ using Lojinha.Cart.API.Dtos;
 using Lojinha.Cart.API.Dtos.Filters;
 using Lojinha.Cart.API.Dtos.Profiles;
 using Lojinha.Cart.API.Dtos.Validators;
+using Lojinha.Cart.API.Messages;
 using Lojinha.Cart.API.Repositories;
 using Lojinha.Cart.API.Utils;
 using Microsoft.AspNetCore.Diagnostics;
@@ -48,8 +49,20 @@ public static class ApiExtension
             return Results.Ok(await repository.ApplyCouponAsync(id, couponCode));
         });
 
-         api.MapGet("remove-cupom/{id:long}", async (HttpContext context, [FromRoute] long id, ICartRepository repository) => {
+        api.MapGet("remove-cupom/{id:long}", async (HttpContext context, [FromRoute] long id, ICartRepository repository) => {
             return Results.Ok(await repository.RemoveCouponAsync(id));
+        });
+
+
+        api.MapPost("checkout", async (HttpContext context, [FromBody] CheckoutDTO dto, ICartRepository repository) => {
+            var cart = await repository.FindByUserIdAsync(dto.UserId!);
+            if (cart is null) return Results.NotFound();
+            dto.CartDetails = cart.CartDetails;
+            dto.DateTime = new();
+
+            // Chamar o RabbitMQ logic comes here!
+            
+            return Results.Ok(dto);
         });
 
 

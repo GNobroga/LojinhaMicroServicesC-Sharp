@@ -1,14 +1,19 @@
-namespace Lojinha.Consumer.Web.Models;
+using System.ComponentModel.DataAnnotations;
+using Lojinha.Cart.API.Dtos;
 
-public class Cart
+namespace Lojinha.Cart.API.Messages;
+
+public class CheckoutDTO 
 {
-
+    
     public long Id { get; set; }
+
+    [Required(ErrorMessage = "The userId is required for the best result")]
     public string? UserId { get; set; }
 
     public bool Finished { get; set; }
 
-    public List<CartDetail> CartDetails { get; set; } = new();
+    public IEnumerable<CartDetailDTO> CartDetails { get; set; } = new List<CartDetailDTO>();
 
     public decimal Total { get; set; }
 

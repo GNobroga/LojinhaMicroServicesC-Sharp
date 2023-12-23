@@ -1,0 +1,112 @@
+@model Cart
+
+@if (Model != null && Model.CartDetails.Count() > 0)
+{
+    <form method="post" asp-action="Checkout">
+        <input asp-for="@Model.UserId" hidden />
+        <input asp-for="@Model.Id" hidden />
+        <input asp-for="@Model.Total" hidden />
+        <div>
+            <span style="font-size:25px;" class="text-warning">Enter details and place order:</span>
+            <br/>
+        </div>
+        <div class="border mt-2">
+            <div class="container row">
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-12">
+                            <input asp-for="@Model.Id" hidden/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">First Name:</label>
+                            <input asp-for="@Model.FirstName" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Last Name:</label>
+                            <input asp-for="@Model.LastName" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">E-mail:</label>
+                            <input asp-for="@Model.Email" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Phone Number:</label>
+                            <input asp-for="@Model.Phone" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Card Number:</label>
+                            <input asp-for="@Model.CardNumber" class="form-control"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">CVV:</label>
+                            <input asp-for="@Model.CVV" class="form-control"/>
+                        </div>
+                        <div class="col-12 pb-4">
+                            <label class="col-form-label">Expiry:</label>
+                            <input asp-for="@Model.ExpiryMothYear" placeholder="MMYY" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="d-none d-lg-block">
+                                <div class="row text-danger">
+                                    <div class="col-6">
+                                        Product Details
+                                    </div>
+                                    <div class="col-3">
+                                        Price
+                                    </div>
+                                    <div class="col-3">
+                                        Count
+                                    </div>
+                                     <div class="col-3">
+                                        Desconto
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr/>
+
+                            @foreach (var item in Model.CartDetails)
+                            {
+                            <div class="row h-100">
+                                <div class="col-6">
+                                    <span style="font-size:20px;">@item.Item!.Name</span>
+                                </div>
+                                <div class="col-3">
+                                    <span style="font-size:17px;">@string.Format("{0:c}", item.Item.Price)</span>
+                                </div>
+                                <div class="col-3">
+                                    <span style="font-size:17px;">@item.Quantity
+                                    </span>
+                                </div>
+                                 <div class="col-3">
+                                    <span style="font-size:17px;">@($"{item.Discount}%")
+                                    </span>
+                                </div>
+                            </div>
+                            <hr/>    
+                            }
+                            <div class="row">
+                                <div class="col-12 text-right pr-4 text-danger">
+                                Total: @string.Format("{0:c}", Model.Total)<br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success form-control">
+                                        <span>Place Order</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
