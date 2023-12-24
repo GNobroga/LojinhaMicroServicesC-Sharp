@@ -6,6 +6,7 @@ using Lojinha.Cart.API.Dtos.Filters;
 using Lojinha.Cart.API.Dtos.Profiles;
 using Lojinha.Cart.API.Dtos.Validators;
 using Lojinha.Cart.API.Messages;
+using Lojinha.Cart.API.RabbitMQSender;
 using Lojinha.Cart.API.Repositories;
 using Lojinha.Cart.API.Utils;
 using Microsoft.AspNetCore.Diagnostics;
@@ -54,13 +55,19 @@ public static class ApiExtension
         });
 
 
-        api.MapPost("checkout", async (HttpContext context, [FromBody] CheckoutDTO dto, ICartRepository repository) => {
+        api.MapPost("checkout", async (
+            HttpContext context, 
+            [FromBody] CheckoutDTO dto, 
+            ICartRepository repository,
+            IRabbitMQMessageSender rabbit
+        ) => {
+            
             var cart = await repository.FindByUserIdAsync(dto.UserId!);
             if (cart is null) return Results.NotFound();
             dto.CartDetails = cart.CartDetails;
             dto.DateTime = new();
 
-            // Chamar o RabbitMQ logic comes here!
+            rabbit.Send(dto, "checkout_queue");
             
             return Results.Ok(dto);
         });
@@ -83,6 +90,7 @@ public static class ApiExtension
         builder.Services.AddScoped<IValidator<ItemDTO>, ItemDTOValidator>();
         builder.Services.AddScoped<IValidator<CartDTO>, CartDTOValidator>();
         builder.Services.AddScoped<ICartRepository, CartRepository>();
+        builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
     }
 
     public static void ApiHandlerException(this WebApplication app)

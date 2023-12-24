@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Product.API", "Loji
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Consumer.Web", "Lojinha.Consumer.Web\Lojinha.Consumer.Web.csproj", "{92AE0336-1F00-43D1-819A-389659125A7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.IdentityServer", "Lojinha.IdentityServer\Lojinha.IdentityServer.csproj", "{462FEEB2-C761-41BA-B6B4-F90CD9C7160A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Coupon.API", "Lojinha.Coupon.API\Lojinha.Coupon.API.csproj", "{876F5FD1-FFD4-4EE5-A4D2-08C3DA18C9E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.IdentityServer.Auth", "Lojinha.IdentityServer.Auth\Lojinha.IdentityServer.Auth.csproj", "{5C5D7587-D8EA-4739-AD05-FA69409EDCFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lojinha.Order.API", "Lojinha.Order.API\Lojinha.Order.API.csproj", "{7F2A45DF-BAE6-46F3-A314-A7F57017FE7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,13 +30,17 @@ Global
 		{92AE0336-1F00-43D1-819A-389659125A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92AE0336-1F00-43D1-819A-389659125A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92AE0336-1F00-43D1-819A-389659125A7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{462FEEB2-C761-41BA-B6B4-F90CD9C7160A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{462FEEB2-C761-41BA-B6B4-F90CD9C7160A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{462FEEB2-C761-41BA-B6B4-F90CD9C7160A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{462FEEB2-C761-41BA-B6B4-F90CD9C7160A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{876F5FD1-FFD4-4EE5-A4D2-08C3DA18C9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{876F5FD1-FFD4-4EE5-A4D2-08C3DA18C9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{876F5FD1-FFD4-4EE5-A4D2-08C3DA18C9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{876F5FD1-FFD4-4EE5-A4D2-08C3DA18C9E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C5D7587-D8EA-4739-AD05-FA69409EDCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C5D7587-D8EA-4739-AD05-FA69409EDCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C5D7587-D8EA-4739-AD05-FA69409EDCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C5D7587-D8EA-4739-AD05-FA69409EDCFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2A45DF-BAE6-46F3-A314-A7F57017FE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2A45DF-BAE6-46F3-A314-A7F57017FE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2A45DF-BAE6-46F3-A314-A7F57017FE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2A45DF-BAE6-46F3-A314-A7F57017FE7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
