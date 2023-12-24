@@ -1,6 +1,6 @@
 # Lojinha
 
-É uma aplicação que estou fazendo para aprofundar no conceito de microserviços.
+É um projeto para por em prática a ideia de microserviços. Nele eu utilizo o RabbitMQ como broker, Duende Server como implementação do protocolo OpenID. No entanto, eu não utilizo um gateway pra centralizar as chamadas dos microserviços pois a ideia é realmente criar algo básico só pra deixar o conceito fixado.
 
 ## Tecnologias
 
