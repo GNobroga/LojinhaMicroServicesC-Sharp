@@ -18,3 +18,5 @@
 
 #### Duende Server
 
+#### RabbitMQ
+
