@@ -20,3 +20,7 @@
 
 #### RabbitMQ
 
+## Conceito de Gateway
+
+É basicamente um Entrypoint, assim como em redes de computadores onde um gateway é um porta de entrada e saida em microserviços a ideia é a mesma. Ao invés dos clients precisarem saber todas as urls dos microserviços a gente delega isso pra um gateway que é um microserviço que agrupa todos os outros.
+
